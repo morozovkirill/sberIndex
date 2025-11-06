@@ -1,9 +1,7 @@
 @font-face {
   font-family: "Pt-Serif";
   src: local("Serif"), url(./fonts/PTSerif-Regular.ttf) format("ttf");
-}
 
-@font-face {
   font-family: "Arimo";
   src: local("Arimo"), url(./fonts/Arimo-VariableFont_wght.ttf) format("woff2");
 }
