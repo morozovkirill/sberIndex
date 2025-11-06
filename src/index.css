@@ -1,12 +1,15 @@
 @font-face {
   font-family: "Pt-Serif";
-  src: local("Serif"), url(./fonts/PTSerif-Regular.ttf) format("ttf");
+  src: local("Pt-Serif"), url(./fonts/PTSerif-Regular.ttf) format("woff2");
+}
 
+@font-face {
   font-family: "Arimo";
   src: local("Arimo"), url(./fonts/Arimo-VariableFont_wght.ttf) format("woff2");
 }
 
 body {
+  font-family: "Arimo";
   margin: 0;
   padding-left: 100px;
   padding-right: 100px;
