@@ -1,14 +1,35 @@
+h2 {
+  font-size: 1em;
+}
+
+h3 {
+  font-size: 0.6em;
+  line-height: 1.2em;
+  margin-bottom: 2em;
+}
+
+figcaption {
+  max-width: 1000px;
+  margin-top: 3em;
+  font-size: 0.6em;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.2em;
+  white-space: pre-line;
+}
+
+figure {
+  text-align: -webkit-center;
+}
+
 .App {
   text-align: center;
 }
 
 .App-header {
   background-color: #fff;
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  margin-top: 0.5em;
+  margin-top: 1em;
   justify-content: center;
   font-size: calc(10px + 8vmin);
   line-height: 1em;
@@ -16,9 +37,23 @@
   color: rgba(0, 0, 0, 0.8);
 }
 
+.caption {
+  display: flex;
+  justify-content: center;
+  font-size: 0.8em;
+  line-height: 1.2em;
+  margin-top: 2em;
+  color: rgba(0, 0, 0, 0.6);
+}
+
 svg {
-  font-family: "Arimo";
-  letter-spacing: 0.5px;
+  font-family: "PT-Sans";
+  font-size: 0.5em;
+  overflow: visible;
+}
+
+circle {
+  transition: fill 300ms;
 }
 
 button {
@@ -35,6 +70,10 @@ button {
 button:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+button:focus {
+  outline: none;
 }
 
 button.left {
@@ -57,13 +96,29 @@ button.active {
 #tooltip {
   position: absolute;
   z-index: 100;
-  background-color: white;
-  border: solid 1px black;
-  padding: 8px;
-  font-size: 12px;
-  line-height: 1.2em;
+  background-color: transparent;
+  /* border: solid 1px black; */
+  /* padding: 8px; */
+  font-size: 18px;
+  line-height: 1.4em;
   pointer-events: none;
   transition: all 300ms;
+}
+
+#tooltip span {
+  background-color: white;
+  padding: 6px 8px 6px 8px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+#tooltip .positive span {
+  background-color: black;
+  color: white;
+}
+
+#tooltip .negative span {
+  background-color: #ee4444;
+  color: white;
 }
 
 .legend {
@@ -75,4 +130,28 @@ button.active {
   display: flex;
   text-align: left;
   max-width: 800px;
+}
+
+.loading {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6em;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.chartContainer {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+li {
+  margin-top: 0.5em;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
 }

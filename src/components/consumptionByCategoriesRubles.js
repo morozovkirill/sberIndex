@@ -9,14 +9,53 @@ const ConsumptionByCategoriesRubles = (props) => {
 
   const containerRef = useRef();
 
+  const data = [
+    ...new Set(dataConsumptionByYearsByCategories.map((elem) => elem.category)),
+  ]
+    .map((elem) => {
+      const prevYear = dataConsumptionByYearsByCategories
+        .filter((item) => item.category === elem && item.diff < 0)
+        .map((e) => {
+          const value = dataConsumptionByYears
+            .find((item) => item.territory_id === e.territory_id)
+            .categories.find((item) => item.category === e.category)
+            .years.find((item) => item[0] === "2023")[1];
+          return value;
+        })
+        .reduce((acc, curr) => acc + curr, 0);
+
+      const nextYear = dataConsumptionByYearsByCategories
+        .filter((item) => item.category === elem && item.diff < 0)
+        .map((e) => {
+          const value = dataConsumptionByYears
+            .find((item) => item.territory_id === e.territory_id)
+            .categories.find((item) => item.category === e.category)
+            .years.find((item) => item[0] === "2024")[1];
+          return value;
+        })
+        .reduce((acc, curr) => acc + curr, 0);
+
+      // const diff = Math.abs(nextYear - prevYear)*100/prevYear
+      const diff = Math.abs(nextYear - prevYear);
+
+      const obj = {
+        category: elem,
+        diff: -diff,
+      };
+      return obj;
+    })
+    .filter((elem) => elem.category !== "Все категории");
+
   useEffect(() => {
     const plot = Plot.plot({
       width: width,
       height: height,
       marginRight: 150,
+      marginLeft: 80,
       y: { label: null, axis: "right" },
       x: {
-        grid: true,
+        axis: null,
+        // grid: true,
         tickFormat: (d) => compactNumber(d).toLocaleString("ru-RU"),
         label: "Δ расходов 2023 — 2024, ₽",
         labelArrow: "left",
@@ -24,47 +63,20 @@ const ConsumptionByCategoriesRubles = (props) => {
         labelOffset: -90,
       },
       marks: [
-        Plot.barX(
-          [
-            ...new Set(
-              dataConsumptionByYearsByCategories.map((elem) => elem.category)
-            ),
-          ]
-            .map((elem) => {
-              const prevYear = dataConsumptionByYearsByCategories
-                .filter((item) => item.category === elem && item.diff < 0)
-                .map((e) => {
-                  const value = dataConsumptionByYears
-                    .find((item) => item.territory_id === e.territory_id)
-                    .categories.find((item) => item.category === e.category)
-                    .years.find((item) => item[0] === "2023")[1];
-                  return value;
-                })
-                .reduce((acc, curr) => acc + curr, 0);
-
-              const nextYear = dataConsumptionByYearsByCategories
-                .filter((item) => item.category === elem && item.diff < 0)
-                .map((e) => {
-                  const value = dataConsumptionByYears
-                    .find((item) => item.territory_id === e.territory_id)
-                    .categories.find((item) => item.category === e.category)
-                    .years.find((item) => item[0] === "2024")[1];
-                  return value;
-                })
-                .reduce((acc, curr) => acc + curr, 0);
-
-              // const diff = Math.abs(nextYear - prevYear)*100/prevYear
-              const diff = Math.abs(nextYear - prevYear);
-
-              const obj = {
-                category: elem,
-                diff: -diff,
-              };
-              return obj;
-            })
-            .filter((elem) => elem.category !== "Все категории"),
-          { x: "diff", y: "category", fill: "#ee4444", sort: { y: "-x" } }
-        ),
+        Plot.barX(data, {
+          x: "diff",
+          y: "category",
+          fill: "#ee4444",
+          sort: { y: "-x" },
+        }),
+        Plot.text(data, {
+          x: "diff",
+          y: "category",
+          text: (d) => compactNumber(d.diff).toLocaleString("ru-RU") + " ₽",
+          textAnchor: "end",
+          dx: -6,
+          fill: "rgba(0, 0, 0, .8)",
+        }),
       ],
     });
 

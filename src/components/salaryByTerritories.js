@@ -10,6 +10,10 @@ const SalaryByTerritories = (props) => {
 
   useEffect(() => {
     const plot = Plot.plot({
+      subtitle:
+        "Муниципалитеты, в которых год к году сократились заработные платы",
+      caption:
+        "Разница в среднем заработоке за январь–декабрь 2024 и 2023 годов. В выборке участвуют только те муниципалитеты, по которым есть полные данные (все месяцы в течение двух лет).",
       width: width,
       height: height,
       marginLeft: 150,
@@ -17,8 +21,8 @@ const SalaryByTerritories = (props) => {
       x: {
         type: "log",
         grid: true,
-        tickFormat: (d) => compactNumber(d).toLocaleString("ru-RU"),
-        label: "Расходы за год, ₽",
+        tickFormat: (d) => (d / 1000).toLocaleString("ru-RU"),
+        label: "Среднегодовой заработок, тыс. ₽",
         labelOffset: -8,
       },
       y: {
@@ -32,32 +36,29 @@ const SalaryByTerritories = (props) => {
       marks: [
         Plot.arrow(
           dataUnitedConsumptionSalary.filter(
-            (elem) => elem.consumption[2024] < elem.consumption[2023]
+            (elem) => elem.salary[2024] < elem.salary[2023]
           ),
           {
-            x1: (d) => d.consumption[2023],
-            x2: (d) => d.consumption[2024],
+            x1: (d) => d.salary[2023],
+            x2: (d) => d.salary[2024],
             y: "territory_id",
             stroke: "#ee4444",
           }
         ),
         Plot.text(
           dataUnitedConsumptionSalary.filter(
-            (elem) => elem.consumption[2024] < elem.consumption[2023]
+            (elem) => elem.salary[2024] < elem.salary[2023]
           ),
           {
-            x: (d) =>
-              d.consumption[2024] +
-              (d.consumption[2023] - d.consumption[2024]) / 2,
+            x: (d) => d.salary[2024] + (d.salary[2023] - d.salary[2024]) / 2,
             y: "territory_id",
             text: (d) =>
-              compactNumber(
-                d.consumption[2024] - d.consumption[2023]
-              ).toLocaleString("ru-RU"),
+              compactNumber(d.salary[2024] - d.salary[2023]).toLocaleString(
+                "ru-RU"
+              ),
             textAnchor: "center",
             dy: -12,
-            fontSize: (d) =>
-              -(d.consumption[2024] - d.consumption[2023]) / 1500 + 8,
+            fontSize: (d) => -(d.salary[2024] - d.salary[2023]) / 1000 + 8,
           }
         ),
       ],
